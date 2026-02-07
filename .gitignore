@@ -1,0 +1,50 @@
+# ============================================================
+# NHANES Women's CKM Phenotyping Project - .gitignore
+# ============================================================
+
+# -------------------- DATA FILES --------------------
+# Raw NHANES data files (too large for GitHub)
+data/raw/*.XPT
+data/raw/*.xpt
+
+# Keep structure but not the large files
+!data/raw/.gitkeep
+!data/processed/
+!data/processed/.gitkeep
+
+# -------------------- PYTHON --------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+nhanes-ckm/
+
+# -------------------- JUPYTER --------------------
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# -------------------- IDE --------------------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# -------------------- OUTPUTS --------------------
+# Keep figures (they're your portfolio pieces!)
+# figures/*.png  # Uncomment if files get too large
+
+# Large temporary files
+*.h5
+*.hdf5
+*.pickle
+*.pkl
+*.log
+
+# Environment variables
+.env
