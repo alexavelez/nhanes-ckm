@@ -1,0 +1,6 @@
+category,n,pct_of_original,reason
+Full P_RHQ sample,5314,100.0,Starting sample — females 12+
+Excluded — age < 20,905,17.0,Age restriction — never asked RHQ131
+Excluded — age > 44,2659,50.0,CDC suppression — data removed from public file
+Excluded — module non-response,147,2.8,Zero P_RHQ data despite full MEC examination
+Analytical sample,1603,30.2,Women aged 20–44 with P_RHQ data
