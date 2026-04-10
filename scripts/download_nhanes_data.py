@@ -156,7 +156,7 @@ def download_all_modules():
         print(f"{total_size / (1024 * 1024):.2f} MB")
         print()
         print("🚀 Next steps:")
-        print("   1. Run notebooks/00_EXPLORATION.ipynb to explore the data")
+        print("   1. Run notebooks/01_data_exploration.ipynb to explore the data")
         print("   2. See README.md for analysis workflow")
         print()
         return True
