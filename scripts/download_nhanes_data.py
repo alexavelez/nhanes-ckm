@@ -41,6 +41,14 @@ NHANES_MODULES = {
         'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_RHQ.xpt',
         'description': 'Reproductive Health Questionnaire'
     },
+    'P_HDL.XPT': {
+        'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_HDL.xpt',
+        'description': 'HDL Cholesterol'
+    },
+    'P_TRIGLY.XPT': {
+        'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_TRIGLY.xpt',
+        'description': 'Triglycerides & LDL'
+    },
 }
 
 def download_file(url, filepath, description):
