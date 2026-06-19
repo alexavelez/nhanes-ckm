@@ -19,12 +19,12 @@
 
 | File | Module | Codebook | Direct Download |
 | --- | --- | --- | --- |
-| P_DEMO.XPT | Demographics | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_DEMO.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_DEMO.xpt) |
-| P_BMX.XPT | Body Measures | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BMX.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BMX.xpt) |
-| P_BPXO.XPT | Blood Pressure (Oscillometric) | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BPXO.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BPXO.xpt) |
-| P_GHB.XPT | Glycohemoglobin | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_GHB.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_GHB.xpt) |
-| P_BIOPRO.XPT | Biochemistry Profile | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BIOPRO.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BIOPRO.xpt) |
-| P_RHQ.XPT | Reproductive Health Questionnaire | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_RHQ.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_RHQ.xpt) |
+| P_DEMO.xpt | Demographics | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_DEMO.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_DEMO.xpt) |
+| P_BMX.xpt | Body Measures | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BMX.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BMX.xpt) |
+| P_BPXO.xpt | Blood Pressure (Oscillometric) | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BPXO.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BPXO.xpt) |
+| P_GHB.xpt | Glycohemoglobin | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_GHB.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_GHB.xpt) |
+| P_BIOPRO.xpt | Biochemistry Profile | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BIOPRO.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BIOPRO.xpt) |
+| P_RHQ.xpt | Reproductive Health Questionnaire | [Codebook](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_RHQ.htm) | [Download](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_RHQ.xpt) |
 
 Codebook pages include full variable descriptions, response codes, skip patterns, and
 frequencies. Each variable anchors directly — e.g., append `#RHQ162` to the P_RHQ codebook
@@ -178,14 +178,14 @@ python scripts/download_nhanes_data.py --verify
 ### Option 3: Manual Download
 
 1. Click the download links in the Files Required table above
-2. Save `.XPT` files to `data/raw/`
+2. Save `.xpt` files to `data/raw/`
 3. Filenames are case-sensitive — ensure they match exactly
 
 ---
 
 ## Data Exclusion from Repository
 
-Raw `.XPT` files are excluded from version control (see `.gitignore`) because they are
+Raw `.xpt` files are excluded from version control (see `.gitignore`) because they are
 publicly available from CDC and reproducible via the download script. Processed outputs
 in `data/processed/` are also excluded — run the notebooks to regenerate them.
 
@@ -193,11 +193,11 @@ in `data/processed/` are also excluded — run the notebooks to regenerate them.
 
 ## File Formats
 
-NHANES distributes data as **SAS XPORT transport files (.XPT)**. Read in Python with:
+NHANES distributes data as **SAS XPORT transport files (.xpt)**. Read in Python with:
 
 ```python
 import pandas as pd
-df = pd.read_sas('data/raw/P_RHQ.XPT', format='xport', encoding='utf-8')
+df = pd.read_sas('data/raw/P_RHQ.xpt', format='xport', encoding='utf-8')
 ```
 
 ---

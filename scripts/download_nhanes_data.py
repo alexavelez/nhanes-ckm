@@ -17,37 +17,41 @@ import sys
 # All NHANES modules needed for the project
 # Updated URLs - correct as of February 2026
 NHANES_MODULES = {
-    'P_DEMO.XPT': {
+    'P_DEMO.xpt': {
         'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_DEMO.xpt',
         'description': 'Demographics'
     },
-    'P_BMX.XPT': {
+    'P_BMX.xpt': {
         'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BMX.xpt',
         'description': 'Body Measures'
     },
-    'P_BPXO.XPT': {
+    'P_BPXO.xpt': {
         'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BPXO.xpt',
         'description': 'Blood Pressure (Oscillometric)'
     },
-    'P_GHB.XPT': {
+    'P_GHB.xpt': {
         'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_GHB.xpt',
         'description': 'Glycohemoglobin'
     },
-    'P_BIOPRO.XPT': {
+    'P_BIOPRO.xpt': {
         'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BIOPRO.xpt',
         'description': 'Biochemistry Profile'
     },
-    'P_RHQ.XPT': {
+    'P_RHQ.xpt': {
         'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_RHQ.xpt',
         'description': 'Reproductive Health Questionnaire'
     },
-    'P_HDL.XPT': {
+    'P_HDL.xpt': {
         'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_HDL.xpt',
         'description': 'HDL Cholesterol'
     },
-    'P_TRIGLY.XPT': {
+    'P_TRIGLY.xpt': {
         'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_TRIGLY.xpt',
         'description': 'Triglycerides & LDL'
+    },
+    'P_RXQ_RX.xpt': {
+        'url': 'https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_RXQ_RX.xpt',
+        'description': 'Prescription Medications'
     },
 }
 
@@ -173,7 +177,8 @@ def verify_downloads():
     """
     Verify all required files exist
     """
-    data_dir = Path("data/raw")
+    script_dir = Path(__file__).parent
+    data_dir   = script_dir.parent / "data" / "raw"
     missing = []
     
     print("="*80)

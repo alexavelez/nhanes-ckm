@@ -135,12 +135,12 @@ Or download manually:
 
 | File | Description | Link |
 |---|---|---|
-| P_RHQ.XPT | Reproductive Health Questionnaire | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_RHQ.xpt) |
-| P_DEMO.XPT | Demographics & Survey Weights | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_DEMO.xpt) |
-| P_BMX.XPT | Body Measures | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BMX.xpt) |
-| P_BPXO.XPT | Blood Pressure | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BPXO.xpt) |
-| P_GHB.XPT | Glycohemoglobin | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_GHB.xpt) |
-| P_BIOPRO.XPT | Biochemistry Profile | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BIOPRO.xpt) |
+| P_RHQ.xpt | Reproductive Health Questionnaire | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_RHQ.xpt) |
+| P_DEMO.xpt | Demographics & Survey Weights | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_DEMO.xpt) |
+| P_BMX.xpt | Body Measures | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BMX.xpt) |
+| P_BPXO.xpt | Blood Pressure | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BPXO.xpt) |
+| P_GHB.xpt | Glycohemoglobin | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_GHB.xpt) |
+| P_BIOPRO.xpt | Biochemistry Profile | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BIOPRO.xpt) |
 
 Place all files in `data/raw/` before running the notebooks.
 
