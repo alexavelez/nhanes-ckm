@@ -5,8 +5,9 @@ Menopause_Status,descriptive,1602,99.9,False
 Age_Menopause,descriptive,62,3.9,False
 Reproductive_Span,descriptive,58,3.6,False
 Ever_Pregnant,stratification,1601,99.9,False
-Gravidity,clustering,1114,69.5,True
+Gravidity,descriptive,1114,69.5,False
 Parity,clustering,1135,70.8,True
+Pregnancy_Loss,clustering,1100,68.6,True
 Nulliparous,descriptive,1601,99.9,False
 Has_GDM,descriptive,1148,71.6,False
 Has_Macrosomia,descriptive,1061,66.2,False
