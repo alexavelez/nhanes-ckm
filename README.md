@@ -1,224 +1,212 @@
-# nhanes-ckm
+# NHANES Women's CKM Phenotyping
 
-## Reproductive History and Cardiometabolic Risk Phenotyping in Women
+### Early Cardiometabolic-Kidney-Metabolic Risk in Reproductive-Age Women
 
-### NHANES 2017–March 2020 Pre-Pandemic Data
-
-## Author
-
-**Alexandra Velez, MD** — OB-GYN (Colombia). Data Analyst
-GitHub: [@alexavelez](https://github.com/alexavelez)
-
-![Python](https://img.shields.io/badge/Python-3.11-blue.svg)
-![Status](https://img.shields.io/badge/Status-In%20Progress-yellow.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
+**Author:** Alexandra Velez, MD  
+**Data:** NHANES 2017–March 2020 Pre-Pandemic Public Use Files  
+**Repository:** `github.com/alexavelez/nhanes-ckm`
 
 ---
 
-## Clinical Motivation
+## The Question
 
-Standard cardiovascular risk calculators — the Pooled Cohort Equations,
-SCORE2, and most clinical decision tools — were developed predominantly in
-male cohorts and miss female-specific risk signals entirely. A woman's
-reproductive history contains information about her long-term cardiometabolic
-trajectory that no standard risk calculator captures.
+Among reproductive-age women aged 20–44, do those with adverse pregnancy
+outcomes — particularly gestational diabetes — already show distinct early
+cardiometabolic biomarker profiles compared to women without APOs?
 
-The 2023 AHA/ACC Cardiovascular-Kidney-Metabolic (CKM) framework explicitly
-recognizes adverse pregnancy outcomes as cardiovascular risk enhancers — yet
-they remain absent from routine clinical risk assessment. A 35-year-old woman
-with a history of gestational diabetes and borderline metabolic biomarkers has
-a fundamentally different risk trajectory than a 35-year-old without that
-history, even when their current lab values look identical. Gestational
-diabetes reveals underlying insulin resistance years — sometimes decades —
-before conventional screening would detect it.
-
-- **Gestational diabetes** → 7x increased lifetime risk of type 2 diabetes
-- **Preeclampsia** → 2–4x increased risk of cardiovascular disease
-- **Current risk calculators** → ignore these factors entirely
-
-This project tests whether women with adverse pregnancy outcomes cluster into
-distinct cardiometabolic phenotypes using NHANES 2017–March 2020 reproductive
-health and metabolic data. The pipeline links reproductive history (P_RHQ) to
-metabolic biomarkers (P_BIOPRO, P_GHB), anthropometrics (P_BMX), and blood
-pressure (P_BPXO) to identify CKM risk phenotypes that standard screening
-would miss.
+This project uses unsupervised clustering to phenotype early
+cardiometabolic-kidney-metabolic (CKM) risk in 1,603 reproductive-age
+women, linking reproductive history features to cardiometabolic biomarkers
+through k-means clustering. The framing is intentional: not established
+cardiovascular disease, but early dysregulation in a population young
+enough to benefit most from preventive intervention.
 
 ---
 
-## Clinical Vignette
+## The Answer
 
-> A 35-year-old woman presents for a routine checkup. BMI 28, BP 125/80,
-> HbA1c 5.6%. By every standard risk calculator she is low risk — no
-> intervention indicated.
->
-> Her reproductive history: two pregnancies, both complicated by gestational
-> diabetes. Standard risk tools ignore this entirely.
->
-> This project asks: does her reproductive history place her in a
-> cardiometabolic phenotype that warrants earlier intervention? And can
-> we identify that phenotype systematically across a nationally
-> representative sample?
+Yes — with important nuance.
 
----
+A distinct metabolic risk phenotype emerges in 19.2% of the analytical
+sample (n=243), characterized by prediabetic glycemia (HbA1c 5.8%),
+central obesity (BMI 36.5, waist 113 cm), low HDL (46 mg/dL), elevated
+triglycerides (93 mg/dL), and elevated blood pressure (SBP 115.7 mmHg).
+Women with GDM history are 2.45 times more likely to be in this cluster
+than in the combined low-risk groups (OR=2.45, p=0.001). The pattern
+holds across eight independent biomarkers and is confirmed by fasting
+lipid data the clustering algorithm never accessed.
 
-## Analytical Sample
-
-| Parameter               | Value                                         |
-| ----------------------- | --------------------------------------------- |
-| Source                  | NHANES 2017–March 2020 Pre-Pandemic           |
-| Modules                 | P_RHQ, P_DEMO, P_BIOPRO, P_GHB, P_BMX, P_BPXO |
-| Full P_RHQ sample       | 5,314 females aged 12–150                     |
-| Excluded — age < 20     | 905 (age restriction)                         |
-| Excluded — age > 44     | 2,659 (CDC data suppression)                  |
-| Excluded — non-response | 147 (zero P_RHQ data)                         |
-| **Analytical sample**   | **1,603 women aged 20–44**                    |
-| Survey weight           | WTMECPRP (MEC examination weight)             |
-
-The restriction to women aged 20–44 is driven by CDC data suppression —
-pregnancy and hysterectomy data for women outside this range has been removed
-from the public use file due to disclosure risk. The complete dataset is
-available through the [NCHS Research Data Center](https://www.cdc.gov/rdc/).
+An additional outlier phenotype (n=19) represents the far end of the
+spectrum — severely uncontrolled diabetes (HbA1c 9.4%, glucose 218 mg/dL)
+with 37% GDM history. These women share the same adiposity profile as
+the metabolic risk cluster, separated by disease progression rather than
+body size.
 
 ---
 
-## Notebook Pipeline
+## Pipeline
 
-| Notebook                                    | Status      | Description                                                                                                                                                                              |
-| ------------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `01_data_exploration.ipynb`                 | ✅ Complete | Data loading, SAS artifact detection, encoding documentation, skip logic mapping, analytical sample definition, weighted prevalence estimates                                            |
-| `02_reproductive_feature_engineering.ipynb` | ✅ Complete | Feature engineering across four reproductive domains: pregnancy history, adverse pregnancy outcomes, surgical history, hormone therapy. 18 features derived, 4 designated for clustering |
-| `03_ckm_integration.ipynb`                  | ✅ Complete | CKM biomarker integration from 6 NHANES modules, eGFR calculation, medication flags from P_RXQ_RX. 12-feature Stage 1 clustering set established                                         |
-| `04_exploratory_analysis.ipynb`             | ⏳ Planned  | Descriptive analysis, biomarker distributions by APO status, correlation analysis, missingness strategy                                                                                  |
-| `05_clustering.ipynb`                       | ⏳ Planned  | Unsupervised phenotyping — k-means clustering on 12-feature set                                                                                                                          |
-| `06_clinical_interpretation.ipynb`          | ⏳ Planned  | Clinical interpretation of clusters and actionable risk communication                                                                                                                    |
-
----
-
-## Key Findings — Notebook 01
-
-**SAS XPT artifact detected and fixed.** True zero values in seven variables
-across both source files were stored as 5.397605e-79 due to a known SAS
-floating point export issue. Affected variables include WTMECPRP (survey
-weight, n=1,260), RHD167 (parity, n=173), and RIDAGEYR (age, n=574). A
-reusable detection function (`scan_sas_artifacts()`) is defined in Section 4
-and should be applied to any SAS XPT file before analysis.
-
-**Missingness is structural, not random.** Every missing value in RHQ131
-(ever pregnant — the most critical gate variable) was traced to a known
-cause: 905 age-restricted teenagers, 204 CDC-suppressed adults 45+, 148
-confirmed module non-responders, and 5 refused/don't know. None are
-recoverable through imputation.
-
-**Demographic composition confirmed.** The 5.8 percentage point difference
-between unweighted (71.8%) and weighted (66.0%) ever-pregnant prevalence was
-fully explained by racial/ethnic and income oversampling, consistent with
-NHANES analytic notes (Stierman et al., 2021).
-
-**GDM prevalence: 10.9% (weighted)** among women aged 20–44 — consistent
-with published CDC surveillance data, providing an independent validation
-that the survey weight application is producing correct results.
+| Notebook                                    | Status      | Description                                                                                                                                                                                  |
+| ------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `01_data_exploration.ipynb`                 | ✅ Complete | Data loading, SAS artifact detection, encoding documentation, skip logic mapping, analytical sample definition (n=1,603), weighted prevalence estimates                                      |
+| `02_reproductive_feature_engineering.ipynb` | ✅ Complete | Feature engineering across four reproductive domains: pregnancy history, adverse pregnancy outcomes, surgical history, hormone therapy. 19 features derived, 4 designated for clustering     |
+| `03_ckm_integration.ipynb`                  | ✅ Complete | CKM biomarker integration from 6 NHANES modules, eGFR calculation, medication flags from P_RXQ_RX. 12-feature Stage 1 clustering set established                                             |
+| `04_exploratory_analysis.ipynb`             | ✅ Complete | Descriptive analysis, biomarker distributions by APO status, Spearman correlation analysis, collinearity decisions, missingness strategy, medication confounder assessment                   |
+| `05_preprocessing.ipynb`                    | ✅ Complete | Zero-imputation for never-pregnant women, KNN imputation for Age_Menarche, median imputation for residual missingness, APO unknown exclusion, RobustScaler application                       |
+| `06_clustering.ipynb`                       | ✅ Complete | K-means k=2–8, gap statistic, silhouette, Calinski-Harabasz, bootstrap stability (ARI=0.876 median), hierarchical sensitivity, StandardScaler sensitivity, APO_Score sensitivity (ARI=0.969) |
+| `07_clinical_interpretation.ipynb`          | ✅ Complete | Cluster phenotype characterization, central question answered, outlier phenotype, APO unknown group, Stage 2 fasting lipids, clinical implications                                           |
 
 ---
 
-## Participant Flow
+## Key Analytical Decisions
 
-![Participant Flow Diagram](figures/participant_flow.png)
+**Sample:** 1,603 women aged 20–44 from NHANES 2017–March 2020  
+**Clustering sample:** 1,266 after exclusions (unknown pregnancy status n=2,
+unknown APO status n=89, incomplete biomarker data n=227, outlier
+phenotype excluded n=19 after preliminary clustering)
+
+**Features:** 10 clustering features — Age_Menarche, Parity,
+Pregnancy_Loss, APO_Score, HbA1c, BMI, Mean_SBP, eGFR, HDL, Glucose  
+(Waist dropped — collinear with BMI r=0.95; Mean_DBP dropped — collinear
+with Mean_SBP r=0.79)
+
+**Scaling:** RobustScaler (median/IQR) — chosen over StandardScaler
+because skewed clinical distributions with meaningful outliers inflate
+standard deviation and distort z-score scaling. StandardScaler
+sensitivity confirmed choice was not arbitrary — it destroyed the
+metabolic signal entirely.
+
+**Missing data:** Never-pregnant women zero-imputed on pregnancy features
+(clinical definition, not statistical imputation). Age_Menarche imputed
+via KNN (k=5) leveraging known BMI-menarche associations. APO_Score
+unknowns excluded — clinical events cannot be statistically estimated.
+
+**K selection:** k=3 selected on convergence of silhouette peak (0.1813),
+gap statistic Tibshirani criterion, and inertia elbow. Calinski-Harabasz
+favored k=2 which inspection confirmed was not clinically meaningful.
 
 ---
 
-## Data Access
+## Results Summary
 
-NHANES data is publicly available at no cost from the CDC. Download all
-required modules with the included script:
+| Group             | N   | %     | HbA1c | BMI  | GDM history |
+| ----------------- | --- | ----- | ----- | ---- | ----------- |
+| Metabolic Risk    | 243 | 19.2% | 5.8%  | 36.5 | 15.6%       |
+| Low Risk          | 273 | 21.6% | 5.3%  | 25.5 | 8.1%        |
+| Lowest Risk       | 750 | 59.2% | 5.2%  | 27.7 | 6.7%        |
+| Outlier phenotype | 19  | —     | 9.4%  | 36.1 | 37.0%       |
+
+GDM OR (Metabolic Risk vs combined low-risk): **2.45 (p=0.001)**  
+Triglycerides ≥150 mg/dL: **22.1%** Metabolic Risk vs **2.8%** Low Risk
+
+---
+
+## Known Limitations
+
+- **No temporality** — cross-sectional design cannot establish whether
+  GDM preceded cardiometabolic dysregulation or vice versa
+- **Hypertensive disorders of pregnancy absent** — preeclampsia and
+  gestational hypertension are not available in the NHANES 2017–March
+  2020 public use file; APO_Score captures metabolic APOs only
+- **Medication attenuation** — medicated women retained (exclusion would
+  bias against highest-risk APO-positive group); biomarker values
+  underestimate true underlying disease burden
+- **Cluster boundary uncertainty** — bootstrap stability (mean ARI=0.777)
+  confirmed the metabolic risk cluster is stable; the boundary between
+  the two low-risk clusters is less certain
+- **Fasting lipids in subsample only** — Stage 2 analysis limited to
+  49.4% of clustering sample
+
+---
+
+## Repository Structure
+
+nhanes-ckm/
+├── notebooks/
+│ ├── 01_data_exploration.ipynb
+│ ├── 02_reproductive_feature_engineering.ipynb
+│ ├── 03_ckm_integration.ipynb
+│ ├── 04_exploratory_analysis.ipynb
+│ ├── 05_preprocessing.ipynb
+│ ├── 06_clustering.ipynb
+│ └── 07_clinical_interpretation.ipynb
+├── data/
+│ ├── raw/ # NHANES .XPT files (not tracked — see below)
+│ └── processed/ # Pipeline outputs (tracked)
+│ ├── reproductive_features.csv
+│ ├── feature_classification.csv
+│ ├── ckm_features.csv
+│ ├── clustering_ready.csv
+│ ├── clustering_prescale.csv
+│ ├── cluster_assignments.csv
+│ ├── cluster_summary_table.csv
+│ ├── outlier_phenotype.csv
+│ └── apo_unknown.csv
+├── figures/ # All visualizations
+└── scripts/
+└── download_nhanes_data.py
+
+---
+
+## Reproducing the Analysis
+
+### 1. Clone the repository
 
 ```bash
-python scripts/download_nhanes_data.py
-```
-
-Or download manually:
-
-| File         | Description                       | Link                                                                            |
-| ------------ | --------------------------------- | ------------------------------------------------------------------------------- |
-| P_RHQ.xpt    | Reproductive Health Questionnaire | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_RHQ.xpt)    |
-| P_DEMO.xpt   | Demographics & Survey Weights     | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_DEMO.xpt)   |
-| P_BMX.xpt    | Body Measures                     | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BMX.xpt)    |
-| P_BPXO.xpt   | Blood Pressure                    | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BPXO.xpt)   |
-| P_GHB.xpt    | Glycohemoglobin                   | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_GHB.xpt)    |
-| P_BIOPRO.xpt | Biochemistry Profile              | [CDC](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BIOPRO.xpt) |
-
-Place all files in `data/raw/` before running the notebooks.
-
----
-
-## Reproduction
-
-```bash
-# Clone the repository
 git clone https://github.com/alexavelez/nhanes-ckm.git
 cd nhanes-ckm
-
-# Create environment
-conda env create -f environment.yml
-conda activate nhanes-ckm
-
-# Download NHANES data
-python scripts/download_nhanes_data.py
-
-# Run notebooks in order
-jupyter notebook
 ```
 
----
+### 2. Create the environment
 
-## Technical Stack
+```bash
+conda create -n nhanes-ckm python=3.11
+conda activate nhanes-ckm
+pip install pandas numpy matplotlib seaborn scikit-learn scipy jupyter
+```
 
-| Tool        | Purpose              |
-| ----------- | -------------------- |
-| Python 3.11 | Core language        |
-| pandas      | Data manipulation    |
-| numpy       | Numerical operations |
-| matplotlib  | Visualization        |
-| seaborn     | Statistical graphics |
+### 3. Download NHANES data
 
-**Planned additions:**
+```bash
+python scripts/download_nhanes_data.py
+```
 
-| Tool            | Purpose                                      |
-| --------------- | -------------------------------------------- |
-| rpy2 + R survey | Complex survey design — SE and CI estimation |
-| scikit-learn    | Clustering (notebook 05)                     |
-| scipy           | Statistical testing                          |
+This downloads all required modules from CDC to `data/raw/`.
+Total size ~9MB. Files are excluded from version control —
+they are publicly available and reproducible.
 
----
+### 4. Run notebooks in order
 
-## Project Status
-
-Notebook 01 is complete. Notebook 02 is in progress. The weighted
-prevalence implementation will be upgraded from `numpy.average()` to a
-full complex survey design using the R `survey` package via rpy2 — adding
-standard errors and 95% confidence intervals to all prevalence estimates.
-Implementation is planned after the full pipeline is complete.
+Execute notebooks 01 through 07 sequentially. Each notebook
+validates its input files with assertions before proceeding.
 
 ---
 
-## Planned Work
+## Technical Notes
 
-- Complete notebooks 02–06
-- Upgrade weighted prevalence to R `survey` package via rpy2
-- Validate phenotypes against published NHANES estimates
-- Link clusters to NHANES mortality follow-up data for outcome validation
-- Extend analysis to NHANES 2021–2023 cycle for trend comparison
+**SAS XPT artifacts:** True zeros in several NHANES variables are
+stored as near-zero floats (~5.4e-79) due to SAS floating point
+encoding. Resolved via a reusable `scan_sas_artifacts()` function
+in notebook 01.
 
----
+**SEQN index:** All processed files use SEQN as the index. Float64
+vs int64 type mismatches caused silent boolean mask failures during
+development — resolved by consistently using `.isin()` on indices.
 
-## Reference
-
-Stierman B, Afful J, Carroll MD, et al. National Health and Nutrition
-Examination Survey 2017–March 2020 prepandemic data files — development
-of files and prevalence estimates for selected health outcomes. _National
-Health Statistics Reports_; no. 158. Hyattsville, MD: National Center for
-Health Statistics. 2021.
+**Survey weights:** Clustering uses the unweighted analytical sample.
+Weighted prevalence estimates for population-level claims were
+established in notebook 01 using WTMECPRP.
 
 ---
 
-_NHANES 2017–March 2020 Pre-Pandemic | P_RHQ Reproductive Health Module_
-_Analytical sample: 1,603 women aged 20–44_
+## Environment
+
+- Python 3.11
+- pandas, numpy, scipy, matplotlib, seaborn, scikit-learn
+- NHANES 2017–March 2020 Pre-Pandemic Public Use Files
+
+---
+
+**NHANES 2017–March 2020 Pre-Pandemic | Women aged 20–44**  
+**Unsupervised CKM phenotyping | Reproductive history linkage**
+**Alexandra Velez, MD — Health Data Science Portfolio**
